@@ -1,39 +1,37 @@
-# app.py
-
 import streamlit as st
 import pandas as pd
 import joblib
 
-# Load the trained model
+# Memuat model yang telah dilatih
 model_pipeline = joblib.load('heart_disease_model.pkl')
 
-# Function to display prediction result with styled output
+# Fungsi untuk menampilkan hasil prediksi dengan tampilan yang berbeda
 def display_prediction_result(prediction):
     if prediction[0] == 1:
-        st.error("The model predicts that the patient is likely to have heart disease.")
+        st.error("Model memprediksi bahwa pasien kemungkinan memiliki penyakit jantung.")
     else:
-        st.success("The model predicts that the patient is unlikely to have heart disease.")
+        st.success("Model memprediksi bahwa pasien kemungkinan tidak memiliki penyakit jantung.")
 
-# Streamlit app
-st.title("Heart Disease Prediction")
+# Aplikasi Streamlit
+st.title("Prediksi Penyakit Jantung")
 
-# Input fields
-age = st.slider("Age", min_value=20, max_value=90, value=50)
-sex = st.selectbox("Sex", ['Male', 'Female'])
-cp = st.selectbox("Chest Pain Type", ['typical angina', 'atypical angina', 'non-anginal', 'asymptomatic'])
-trestbps = st.slider("Resting Blood Pressure (mm Hg)", min_value=90, max_value=200, value=120)
-chol = st.slider("Serum Cholesterol (mg/dl)", min_value=100, max_value=600, value=200)
-fbs = st.selectbox("Fasting Blood Sugar > 120 mg/dl", ['Yes', 'No'])
-restecg = st.selectbox("Resting ECG Results", ['normal', 'ST-T abnormality', 'LV hypertrophy'])
-thalch = st.slider("Maximum Heart Rate Achieved", min_value=60, max_value=220, value=150)
-exang = st.selectbox("Exercise Induced Angina", ['Yes', 'No'])
-oldpeak = st.slider("ST Depression Induced by Exercise", min_value=0.0, max_value=6.2, value=1.0)
-slope = st.selectbox("Slope of the Peak Exercise ST Segment", ['upsloping', 'flat', 'downsloping'])
-ca = st.select_slider("Number of Major Vessels Colored by Fluoroscopy", options=[0, 1, 2, 3])
-thal = st.selectbox("Thal", ['normal', 'fixed defect', 'reversible defect'])
+# Kolom input
+age = st.slider("Usia", min_value=20, max_value=90, value=50)
+sex = st.selectbox("Jenis Kelamin", ['Laki-laki', 'Perempuan'])
+cp = st.selectbox("Tipe Nyeri Dada", ['Angina khas', 'Angina atipikal', 'Non-anginal', 'Asimtomatik'])
+trestbps = st.slider("Tekanan Darah Istirahat (mm Hg)", min_value=90, max_value=200, value=120)
+chol = st.slider("Kolesterol Serum (mg/dl)", min_value=100, max_value=600, value=200)
+fbs = st.selectbox("Gula Darah Puasa > 120 mg/dl", ['Ya', 'Tidak'])
+restecg = st.selectbox("Hasil EKG Istirahat", ['Normal', 'Abnormalitas ST-T', 'Hipertrofi LV'])
+thalch = st.slider("Denyut Jantung Maksimum yang Dicapai", min_value=60, max_value=220, value=150)
+exang = st.selectbox("Angina yang Dipicu oleh Latihan", ['Ya', 'Tidak'])
+oldpeak = st.slider("Depresi ST yang Dipicu oleh Latihan", min_value=0.0, max_value=6.2, value=1.0)
+slope = st.selectbox("Kemiringan Segmen ST Puncak Latihan", ['Naik', 'Datar', 'Menurun'])
+ca = st.select_slider("Jumlah Pembuluh Besar yang Diberi Warna oleh Fluoroskopi", options=[0, 1, 2, 3])
+thal = st.selectbox("Thalasemia", ['Normal', 'Defek Tetap', 'Defek Reversibel'])
 
-# Make prediction when button is clicked
-if st.button("Predict"):
+# Melakukan prediksi saat tombol "Predict" diklik
+if st.button("Prediksi"):
     input_data = {
         'age': age,
         'sex': sex,
@@ -50,11 +48,11 @@ if st.button("Predict"):
         'thal': thal
     }
 
-    # Convert the input dictionary to a dataframe
+    # Mengonversi dictionary input ke dalam dataframe
     input_df = pd.DataFrame([input_data])
 
-    # Make prediction
+    # Melakukan prediksi
     prediction = model_pipeline.predict(input_df)
 
-    # Display prediction result
+    # Menampilkan hasil prediksi
     display_prediction_result(prediction)
